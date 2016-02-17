@@ -4,10 +4,5 @@ title: About
 permalink: /about/
 ---
 
-{% if site.github_username %}
-* {% include icon-github.html username=site.github_username %}
-{% endif %}
-
-{% if site.twitter_username %}
-* {% include icon-twitter.html username=site.twitter_username %}
-{% endif %}
+{% include icon-github.html username="kn1kn1" %}
+{% include icon-twitter.html username="kn1kn1" %}
