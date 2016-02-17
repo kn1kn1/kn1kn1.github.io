@@ -1,0 +1,83 @@
+---
+layout: post
+title: ChucK - Beatクラス
+---
+
+<p>ChucKクラスの続き。</p><p>他のckファイルからクラスを見れるようにするには、publicにすれば良いらしい。Manualには以下の記述がある。</p>
+
+    <blockquote>
+        <p>If a class is defined as public, it is integrated into the central namespace (instead of the local one),<br />
+and can be instantiated from other programs that are subsequently compiled.</p>
+
+    </blockquote>
+<p><br />
+Beatクラス。<br />
+publicクラスのunloadができないようなのでなるべく汎用になるようにした。</p>
+<pre class="code" data-lang="" data-unlink>public class Beat {
+	int _bpm;
+	dur _bar;
+	
+	public static Beat createBeat(int bpm) {
+		Beat beat;
+		beat.init(bpm);
+		return beat;
+	}
+	
+	fun void init(int bpm) {
+		bpm =&gt; _bpm;
+		1::minute / _bpm =&gt; dur beat4;
+		beat4 * 4 =&gt; _bar;
+	}
+	
+	public void sync(dur duration) {
+		duration - (now % duration) =&gt; now;
+	}
+	
+	public void syncBar() {
+		sync(_bar);
+	}
+	
+	public void syncBeat(int div) {
+		sync(getBeat(div));
+	}
+	
+	public dur getBar() {
+		return _bar;
+	}
+	
+	public dur getBeat(int div) {
+		return _bar / div;
+	}
+}</pre><p>コンストラクタはサポートされていないらしい。</p>
+
+    <blockquote>
+        <p>In the initial release, we do not support constructors yet.</p>
+
+    </blockquote>
+<p>なので、initメソッドでメンバを初期化するようにしている。</p><br />
+<p>使用例。</p>
+<pre class="code" data-lang="" data-unlink>Beat.createBeat(135) @=&gt; Beat beat;
+beat.syncBar();
+beat.getBeat(16) =&gt; dur DUR_16BEAT;
+
+DrumSet drm;
+drm.connect(dac);
+
+Bass bass;
+bass.connect(dac);
+
+[41, 41, 44, 46] @=&gt; int bline[];
+
+0 =&gt; int pos;
+for (0 =&gt; int count; ; 1 +=&gt; count) {	
+	if (count != 0 &amp;&amp; count % 8 == 0) { 1 + pos =&gt; pos; }
+	
+	if (count % 2 == 0) { drm.hh(); }
+	if (count % 8 == 0) { drm.bd(); }
+	if (count % 8 == 4) { drm.sn(); }
+	
+	if (count % 4 == 0) { spork ~ bass.bass(bline[pos % 4]); }
+	if (count % 4 == 2) { spork ~ bass.bass(12 + bline[pos % 4]); }
+	
+	DUR_16BEAT =&gt; now;
+}</pre><p>static factoryメソッドでBeatオブジェクトを生成した後、syncBarで小節単位の同期をして、getBeatで16ビート分のdurationを取得している。</p><p>また、DrumSetとBassもBeatと同じようにpublicにして予めロードしてから使うようにしている。</p>

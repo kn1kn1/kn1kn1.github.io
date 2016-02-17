@@ -1,0 +1,77 @@
+---
+layout: post
+title: ChucK
+---
+
+<p>miniAudicleを使った習作。=>相対パスの記述のやり方がまだ分からず…</p>
+<pre class="code" data-lang="" data-unlink>1::minute / 120 =&gt; dur DUR_4BEAT;
+DUR_4BEAT * 4 =&gt; dur DUR_BAR;
+DUR_BAR - (now % DUR_BAR) =&gt; now;
+DUR_4BEAT / 4 =&gt; dur DUR_16BEAT;
+
+Gain g =&gt; dac;
+//Gain g =&gt; WvOut w =&gt; blackhole;
+//&#34;20090320.wav&#34; =&gt; w.wavFilename;
+.8 =&gt; g.gain;
+SndBuf k =&gt; g;
+&#34;/Applications/miniAudicle/documentation/examples/data/kick.wav&#34;
+ =&gt; k.read;
+SndBuf h =&gt; g;
+&#34;/Applications/miniAudicle/documentation/examples/data/hihat.wav&#34;
+ =&gt; h.read;
+SinOsc s =&gt; ADSR e =&gt; JCRev r =&gt; g;
+(0::ms, 100::ms, .5, 20::ms) =&gt; e.set;
+.1 =&gt; r.mix;
+[0, 3, 7, 10] @=&gt; int NOTES[];
+
+float freq[];
+int sine[];
+int hat[];
+int kick[];
+
+// time loop
+for (0 =&gt; int count;;1 +=&gt; count) {
+    count % 16 =&gt; int i;
+    if ((count / 16) == 16) {
+        break;
+    }
+    if ((count / 16) % 4 == 0) {
+        (16, NOTES) =&gt; notes2freqs @=&gt; freq;
+        (16, 0, 1) =&gt; rands @=&gt; sine;
+        (16, 0, 1) =&gt; rands @=&gt; hat;
+        (16, 0, 1) =&gt; rands @=&gt; kick;
+    }
+    freq[i] =&gt; s.freq;
+    sine[i] * .4 =&gt; s.gain;
+    0 =&gt; h.pos;
+    hat[i] * .3 =&gt; h.gain;
+    0 =&gt; k.pos;
+    kick[i] * .4 =&gt; k.gain;
+    if (i == 0) { 
+        .8 =&gt; k.gain;
+    }
+    if (i == 3) {
+        .8 =&gt; k.gain;
+    }
+    e.keyOn();
+    DUR_16BEAT =&gt; now;
+}
+//w.closeFile();
+
+fun float[] notes2freqs(int size, int notes[]) {
+    float freqs[size];
+    for (0 =&gt; int i; i &lt; size; i++) {
+        (Std.rand2(0, 1) * 11 + 60
+        + notes[Std.rand2(0, notes.cap() - 1)]) 
+        =&gt; Std.mtof =&gt; freqs[i];
+    }
+    return freqs;  
+}
+
+fun int[] rands(int size, int from, int to) {
+    int rands[size];
+    for (0 =&gt; int i; i &lt; size; i++) {
+        Std.rand2(from, to) =&gt; rands[i];
+    }
+    return rands;  
+}</pre>

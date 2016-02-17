@@ -1,0 +1,28 @@
+---
+layout: post
+title: Context Free Art - 6
+---
+
+<p>Sometimes it snows in April</p><p><img src="{{site.baseurl}}/images/20090405200226.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main 
+background{b -.2}
+tile{s 3}
+
+rule main {
+  10 * {} Snows {}
+}
+ 
+rule Snows {
+  SNOW {}
+  Snows {a -.1 s .9 y 2 r 20}
+}
+rule Snows {
+  SNOW {}
+  Snows {a -.1 s .9 x 2 r -5}
+}
+
+rule SNOW {
+  TRIANGLE {}
+  SNOW {r 60 x .001 s .99 b .02}
+}</pre><p><a href="http://www.contextfreeart.org/gallery/view.php?id=1713">http://www.contextfreeart.org/gallery/view.php?id=1713</a></p>

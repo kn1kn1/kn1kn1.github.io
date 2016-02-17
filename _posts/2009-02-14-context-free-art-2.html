@@ -1,0 +1,32 @@
+---
+layout: post
+title: Context Free Art - 2
+---
+
+<p>だんだん慣れてきた。春っぽい感じで。</p><p><img src="{{site.baseurl}}/images/20090214233213.jpg"><br />
+</p>
+
+<pre>startshape main
+tile {s 4}
+ 
+rule main {
+  30 * {} foo {h 75 sat .7 a -.5}
+}
+ 
+rule foo {
+  Lime {s 2}
+  foo {s .8 x 2 r 20}
+}
+rule foo {
+  Lime {s .9}
+  foo {s .8 y -1 r -15}
+}
+
+rule Lime .5 {
+  CIRCLE {b 1}
+}
+rule Lime {
+  CIRCLE {b 1}
+  CIRCLE {b .4 s .9}
+}
+</pre>

@@ -1,0 +1,27 @@
+---
+layout: post
+title: Shadertone
+---
+
+<p><a href="https://atnd.org/events/68964">Sapporo.clj#6 : ATND</a>に参加して、Emacs LiveとShadertoneを試してみました。</p>
+
+<p>手順はそのまま↓にあるとおりでした<s>が、「CIDERのバージョンが...」というような警告が出るので後で対応方法を追記するかもです</s>。</p>
+
+<p><a href="http://yoppa.org/blog/6232.html">Shadertoneで遊んでみた - 導入編</a></p>
+
+<p>あと、当日その場で紹介できなかったですが、Emacs LiveとShadertoneを使っているようですね。</p>
+
+<p><iframe width="480" height="270" src="https://www.youtube.com/embed/pJ5oVqZ9BgY?feature=oembed" frameborder="0" allowfullscreen></iframe></p>
+
+<h4>(追記)「CIDERのバージョンが...」の警告の対応方法</h4>
+
+<pre><code>M-x cider-jack-in
+</code></pre>
+
+<p>とやったときに、起動はするのですが、「CIDERのバージョンが...」と警告が出るので、<a href="https://groups.google.com/forum/#!topic/emacs-live/FovR6k5VWuo">Cider Issue? - Google Group</a> を参考にして、~/.lein/profiles.clj を作成しました。</p>
+
+<p><script src="https://gist.github.com/kn1kn1/d7a7058d611174ccdcdd.js"> </script><a href="https://gist.github.com/kn1kn1/d7a7058d611174ccdcdd">gist.github.com</a></p>
+
+<p>REPLが正常起動されると、↓のようになります。</p>
+
+<p><img src="{{site.baseurl}}/images/20150831164139.png"></p>

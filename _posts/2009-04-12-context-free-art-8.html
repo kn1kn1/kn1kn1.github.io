@@ -1,0 +1,49 @@
+---
+layout: post
+title: Context Free Art - 8
+---
+
+<p>やっと描けるようになった…<br />
+<img src="{{site.baseurl}}/images/20090412125248.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+background {h 65 sat .1}
+tile {s 3.2}
+
+rule main {
+  4 * {h 90 x .8 y .8} cubes {h 320 sat .3}
+}
+
+rule cubes {
+  2 * {y 1.6} CUBE {r 45}
+}
+
+rule CUBE {
+  4 * {x .333 y .333 r 90} TOWER {s 1 .576 b .4}
+}
+
+rule TOWER {
+  TRIANGLE {}
+  TOWER {y .002 s .99 b .02}
+}</pre><p>オリジナルは、昔美術の授業で作った課題作品。二点透視図法を組み合わせたデザイン。<br />
+<img src="{{site.baseurl}}/images/20090412125247.jpg"></p><br />
+<p>調子に乗ってアイコンと似たものも作ってみた。<br />
+<img src="{{site.baseurl}}/images/20090412125246.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+background {b -.1}
+tile {s 1.6}
+
+rule main {
+  2 * {x .8 y .8} CUBE {r 45}
+}
+
+rule CUBE {
+  4 * {x .333 y .333 r 90} TOWER {s 1 .576 b .4}
+}
+
+rule TOWER {
+  TRIANGLE {}
+  TOWER {y .002 s .99 b .02}
+}</pre><p>オリジナルはこちら。MS Wordで作ったことはここだけの秘密である。<br />
+<img src="{{site.baseurl}}/images/20090412125349.jpg"></p>

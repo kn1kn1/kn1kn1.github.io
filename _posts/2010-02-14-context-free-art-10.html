@@ -1,0 +1,23 @@
+---
+layout: post
+title: Context Free Art - 10
+---
+
+<p>derived from <a href="http://www.contextfreeart.org/gallery/view.php?id=2165">http://www.contextfreeart.org/gallery/view.php?id=2165</a> & <a href="http://www.contextfreeart.org/gallery/view.php?id=256">http://www.contextfreeart.org/gallery/view.php?id=256</a></p><p><img src="{{site.baseurl}}/images/20100214144020.jpg"><br />
+Variation: LZW</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+size {s 1 1}
+
+rule main {
+ 20 * {h 18} aa {a -1 b .7 sat .3}
+}
+ 
+rule aa {
+ CIRCLE {}
+ aa {a .00001 r 12 x .1 s .999}
+}
+ 
+rule aa {
+ CIRCLE {}
+ aa {a .00001 r 11 x .2 s .999}
+}</pre>

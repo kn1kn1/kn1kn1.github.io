@@ -1,0 +1,78 @@
+---
+layout: post
+title: Little Java読了
+---
+
+<p>巻末の階乗計算Yコンビネータ for the loyal Schemers and MLers:)。mainを付けて動くようにはしたけど、完全には理解できず。</p>
+<pre class="code lang-java" data-lang="java" data-unlink><span class="synPreProc">package</span> littlejava;
+
+<span class="synType">public</span> <span class="synType">class</span> LittleJavaFactorial {
+  <span class="synType">public</span> <span class="synType">static</span> <span class="synType">void</span> main(String[] args) {
+    O_O factorial = <span class="synStatement">new</span> Y().apply(<span class="synStatement">new</span> MkFact());
+    System.out.println(factorial.apply(<span class="synStatement">new</span> Integer(<span class="synConstant">3</span>)));
+  }
+}
+
+<span class="synType">interface</span> T {
+  O_O apply(T x);
+}
+<span class="synType">interface</span> O_O {
+  Object apply(Object y);
+}
+<span class="synType">interface</span> OO_OO {
+  O_O apply(O_O fact);
+}
+<span class="synType">interface</span> OO_OO_OO {
+  O_O apply(OO_OO f);
+}
+
+<span class="synType">class</span> Y <span class="synType">implements</span> OO_OO_OO {
+  <span class="synType">public</span> O_O apply(OO_OO f) {
+    <span class="synStatement">return</span> <span class="synStatement">new</span> H(f).apply(<span class="synStatement">new</span> H(f));
+  }
+}
+<span class="synType">class</span> H <span class="synType">implements</span> T {
+  <span class="synType">private</span> <span class="synType">final</span> OO_OO f;
+  H(OO_OO f) {
+    <span class="synType">this</span>.f = f;
+  }
+  <span class="synType">public</span> O_O apply(T x) {
+    <span class="synStatement">return</span> f.apply(<span class="synStatement">new</span> G(x));
+  }
+}
+<span class="synType">class</span> G <span class="synType">implements</span> O_O {
+  <span class="synType">private</span> <span class="synType">final</span> T x;
+  G(T x) {
+    <span class="synType">this</span>.x = x;
+  }
+  <span class="synType">public</span> Object apply(Object y) {
+    <span class="synStatement">return</span> (x.apply(x)).apply(y);
+  }
+}
+
+<span class="synType">class</span> MkFact <span class="synType">implements</span> OO_OO {
+  <span class="synType">public</span> O_O apply(O_O fact) {
+    <span class="synStatement">return</span> <span class="synStatement">new</span> Fact(fact);
+  }
+}
+<span class="synType">class</span> Fact <span class="synType">implements</span> O_O {
+  <span class="synType">private</span> <span class="synType">final</span> O_O fact;
+  Fact(O_O fact) {
+    <span class="synType">this</span>.fact = fact;
+  }
+  <span class="synType">public</span> Object apply(Object y) {
+    <span class="synType">int</span> inti = ((Integer)y).intValue();
+    <span class="synStatement">if</span> (inti == <span class="synConstant">0</span>) {
+      <span class="synStatement">return</span> <span class="synStatement">new</span> Integer(<span class="synConstant">1</span>);
+    } <span class="synStatement">else</span> {
+      <span class="synStatement">return</span> 
+        <span class="synStatement">new</span> Integer(
+          inti
+          * 
+          ((Integer)fact.apply(
+                <span class="synStatement">new</span> Integer(inti - <span class="synConstant">1</span>))).intValue()
+              );
+    }
+  }
+}
+</pre>

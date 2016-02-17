@@ -1,0 +1,35 @@
+---
+layout: post
+title: Little Javaつづき
+---
+
+<p>巻末のYSchemeで書いてみた。</p>
+<pre class="code lang-scheme" data-lang="scheme" data-unlink><span class="synSpecial">(</span><span class="synStatement">define</span> G
+  <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>h<span class="synSpecial">)</span>
+    <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>x<span class="synSpecial">)</span>
+      <span class="synSpecial">(</span>h h<span class="synSpecial">)</span> x<span class="synSpecial">)))</span>
+
+<span class="synSpecial">(</span><span class="synStatement">define</span> H
+  <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>mkfact<span class="synSpecial">)</span>
+    <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>h<span class="synSpecial">)</span>
+      <span class="synSpecial">(</span>mkfact <span class="synSpecial">(</span>G h<span class="synSpecial">)))))</span>
+
+<span class="synSpecial">(</span><span class="synStatement">define</span> Y
+  <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>mkfact<span class="synSpecial">)</span>
+    <span class="synSpecial">((</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>h<span class="synSpecial">)</span> <span class="synSpecial">(</span>h h<span class="synSpecial">))</span> <span class="synSpecial">(</span>H mkfact<span class="synSpecial">))))</span>
+
+<span class="synSpecial">(</span><span class="synStatement">define</span> MkFact
+  <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>g<span class="synSpecial">)</span>
+    <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>x<span class="synSpecial">)</span>
+      <span class="synSpecial">(</span><span class="synStatement">cond</span>
+       <span class="synSpecial">((</span><span class="synIdentifier">eq?</span> x <span class="synConstant">0</span><span class="synSpecial">)</span> <span class="synConstant">0</span><span class="synSpecial">)</span>
+       <span class="synSpecial">(</span><span class="synStatement">else</span> <span class="synSpecial">(</span><span class="synIdentifier">*</span> x <span class="synSpecial">(</span>g <span class="synSpecial">(</span><span class="synIdentifier">-</span> x <span class="synConstant">1</span><span class="synSpecial">))))))))</span>
+
+<span class="synSpecial">((</span>Y MkFact<span class="synSpecial">)</span> <span class="synConstant">3</span><span class="synSpecial">)</span>
+</pre><p>以下はG, Hに分けない版。</p>
+<pre class="code lang-scheme" data-lang="scheme" data-unlink><span class="synSpecial">(</span><span class="synStatement">define</span> Y
+  <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>le<span class="synSpecial">)</span>
+    <span class="synSpecial">((</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>f<span class="synSpecial">)</span> <span class="synSpecial">(</span>f f<span class="synSpecial">))</span>
+     <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>f<span class="synSpecial">)</span>
+       <span class="synSpecial">(</span>le <span class="synSpecial">(</span><span class="synStatement">lambda</span> <span class="synSpecial">(</span>x<span class="synSpecial">)</span> <span class="synSpecial">(</span>f f<span class="synSpecial">)</span> x<span class="synSpecial">))))))</span>
+</pre>

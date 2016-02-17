@@ -1,0 +1,64 @@
+---
+layout: post
+title: Overtone
+---
+
+<p>先日、<a href="https://atnd.org/events/67224">Sapporo.clj#5 : ATND</a>に参加して、Overtoneを試してみました。</p>
+
+<p><a href="https://overtone.github.io/">Overtone</a>はSuperColliderをエンジンに使用しています。</p>
+
+<p>以下、Overtoneをインストールして、Piano Phaseを鳴らすところまでの手順です。</p>
+
+<h3>Leiningenのインストール</h3>
+
+<pre><code>$ brew install leiningen
+</code></pre>
+
+<h3>プロジェクトの作成</h3>
+
+<pre><code>$ lein new reich
+</code></pre>
+
+<h3>依存モジュールのロード</h3>
+
+<p>project.cljを開いて、以下のようにovertoneの依存を追加します。</p>
+
+<pre><code>(defproject reich "0.1.0-SNAPSHOT"
+  :dependencies [ [org.clojure/clojure "1.6.0"]
+                  [overtone "0.9.1"] ])
+</code></pre>
+
+<p>その後lein depsで依存モジュールを落としてきます。</p>
+
+<pre><code>$ cd reich
+$ lein deps
+</code></pre>
+
+<p>scsynth関連のモジュールはいくつか落ちてくるのですが、SuperCollider自体はインストールされないようです。</p>
+
+<p>ただ、<a href="https://github.com/overtone/overtone/wiki/Connecting-scsynth">Connecting scsynth &middot; overtone/overtone Wiki &middot; GitHub</a>にあるように、</p>
+
+<pre><code>(use 'overtone.live)
+</code></pre>
+
+<p>と書いてInternal Serverに接続して使う分には、SuperColliderのインストールは不要だそうです。</p>
+
+<h3>実行</h3>
+
+<pre><code>$ lein repl
+</code></pre>
+
+<p>ClojureのREPLが起動するので、Overtoneのコードを入力していきます。</p>
+
+<p>コードは、<a href="https://gist.github.com/samaaron/997ba2902af1cf81a26f">Steve Reich&#39;s Piano Phase - Sonic Pi vs Overtone</a>をそのまま実行してみましたが、overtone.inst.sampled-piano のロードに1時間近く掛かってしまったので、以下のようにsampled-pianoを使用せずsin-oscを使うものに変更しました。</p>
+
+<p><script src="https://gist.github.com/kn1kn1/d34e2782118eb98c0aad.js"> </script><a href="https://gist.github.com/kn1kn1/d34e2782118eb98c0aad">gist.github.com</a></p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="https://github.com/overtone/overtone/wiki/Installing-overtone">Installing overtone &middot; overtone/overtone Wiki &middot; GitHub</a></li>
+<li><a href="https://github.com/overtone/overtone/wiki/Connecting-scsynth">Connecting scsynth &middot; overtone/overtone Wiki &middot; GitHub</a></li>
+<li><a href="https://gist.github.com/samaaron/997ba2902af1cf81a26f">Steve Reich&#39;s Piano Phase - Sonic Pi vs Overtone</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/%E3%83%94%E3%82%A2%E3%83%8E%E3%83%BB%E3%83%95%E3%82%A7%E3%82%A4%E3%82%BA#.E7.AC.AC1.E3.81.AE.E9.83.A8.E5.88.86">&#x30D4;&#x30A2;&#x30CE;&#x30FB;&#x30D5;&#x30A7;&#x30A4;&#x30BA; - Wikipedia</a></li>
+</ul>

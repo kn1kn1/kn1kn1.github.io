@@ -1,0 +1,62 @@
+---
+layout: post
+title: Context Free Art - 3
+---
+
+<p>また少し触ってみた。</p><p>あの人風<br />
+<img src="{{site.baseurl}}/images/20090314103249.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+
+rule main {
+ 5 * {y 5} row {h 240 sat 0}
+}
+
+rule row {
+ 5 * {x 5} Element {}
+}
+
+rule Element {
+   Point {} 
+}
+rule Element {
+   Point {s 0.7} 
+}
+rule Element 10 {
+   None {}
+}
+ 
+rule Point {
+  CIRCLE {s 3 h 0 sat 0 b 1}
+  Point {s .99  sat .01}
+}
+rule None {
+  CIRCLE {s 3 h 0 sat 0 a -1}
+}</pre><p><br />
+ペーパークラフト<br />
+<img src="{{site.baseurl}}/images/20090314103531.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+
+rule main {
+  Chain {h 60}
+}
+
+rule Chain {
+  White {x .5 skew 10 0}
+  Color {}
+  Chain {r 90 x 1 y 1 h 1 b -0.1}
+}
+rule Chain {
+  White {x .5 b 0 skew 0 5}
+  Color {}
+  Chain {flip 90 r -90 x 1 y 1 h -1 b .1 skew 3 0}
+}
+rule Chain 0.01 {}
+
+rule Color {
+  SQUARE {y 1 s 1.4 h 0 sat 1}
+}
+rule White {
+  SQUARE {y 1 s 1.4 h 0 sat 0 b .7}
+}</pre>

@@ -1,0 +1,80 @@
+---
+layout: post
+title: ifttt-webhookとCircleCIを使ってAtomのバージョンアップをトリガーにCIが実行されるようにした
+---
+
+<p><b>[2015/05/29 追記]</b> <a href="{{site.baseurl}}/2015/05/29/iftttからzapierに変更.html">連携サービスをiftttからzapierに変更しました。</a></p>
+
+<p>あるあるネタとして、</p>
+
+<ul>
+<li>自分の開発しているパッケージよりもAtom本体のバージョンアップのほうが頻繁に発生する</li>
+<li>Atomのバージョンアップで自分のパッケージのビルドが壊れる</li>
+</ul>
+
+
+<p>というのがあります。</p>
+
+<p>特に下の件は、パッケージのビルドが壊れているように見えて実際には手元の環境だけの問題で、依存するnode_modulesを最新にすれば問題なかったりするので、CIの真っさらな環境でテストしたいところでした。</p>
+
+<p>そんなわけで、Atomのバージョンアップの度にCIを実行させることにしました。</p>
+
+<h3>全体像</h3>
+
+<p>詳細は後述しますが、以下の流れでAtomのreleaseのフィードからCircleCIを起動出来るようにしています。</p>
+
+<p><a href="https://github.com/atom/atom/releases.atom">https://github.com/atom/atom/releases.atom</a> -> ifttt Feed Channel -> ifttt WordPress Channel -> ifttt.captnemo.in (heroku) -> CircleCI</p>
+
+<h3>CIの選定</h3>
+
+<p>CI自体はgithubへのpushで実行されるようになっていました。
+Travis CIにもwerckerにも存在しないようで、色々調べたところCircleCIにありました。
+Travis CIも画面からビルドの再実行はできたのですが、それ以外の方法は見つけられませんでした。</p>
+
+<p>CircleCIでは、<a href="https://circleci.com/docs/api#new-build">CircleCI REST API - Trigger a new Build</a> にあるように、</p>
+
+<pre><code>curl -X POST https://circleci.com/api/v1/project/:username/:project/tree/:branch?circle-token=:token
+</code></pre>
+
+<p>の形式でPOSTを実行すれば良さそうです。</p>
+
+<p>tokenは、<a href="http://blog.a-know.me/entry/2015/01/04/123432">http://blog.a-know.me/entry/2015/01/04/123432</a> にある手順で、<code>All</code>のtokenを取得しました。</p>
+
+<h3>Atomのバージョンアップを検出</h3>
+
+<p>iftttのFeed Channelを使用して、<code>https://github.com/atom/atom/releases.atom</code>のfeedを監視するようにしました。</p>
+
+<h3>iftttでPOSTを実行する</h3>
+
+<p>iftttでPOSTを発行する公式なChannelは存在しないのですが、それを実現するための仕組みが、<a href="https://github.com/captn3m0/ifttt-webhook">https://github.com/captn3m0/ifttt-webhook</a> で提供されていました。</p>
+
+<p>ちょっとトリッキーですが、ifttt.captnemo.inというサイトのWordPressを更新するという手順をiftttに設定します。</p>
+
+<p>iftttの設定は最終的に以下のようになりました。</p>
+
+<p><img src="{{site.baseurl}}/images/20150522223011.png"></p>
+
+<h3>実行結果</h3>
+
+<p><a href="https://circleci.com/gh/kn1kn1/language-context-free/13">https://circleci.com/gh/kn1kn1/language-context-free/13</a></p>
+
+<p><a href="https://circleci.com/gh/kn1kn1/language-context-free/14">https://circleci.com/gh/kn1kn1/language-context-free/14</a></p>
+
+<p>などが、Atomのバージョンアップで実行したCIの結果です。</p>
+
+<p>分かりにくいですが、Triggerのところが<code>GitHub push by kn1kn1</code>でなく<code>Edit of the project settings</code>になっています。</p>
+
+<p><img src="{{site.baseurl}}/images/20150522223018.png"></p>
+
+<h3>おわりに</h3>
+
+<p>記事の内容の設定をしたのは4月下旬で、その後数回Atomがバージョンアップしていますが、今のところ問題なくCircleCIのビルドが実行されています。また、CircleCIのdocker buildはwerckerのdocker buildよりも早い(4分程度掛かっていたのが2分程度になった)ので、今後はCircleCIだけにしても良いかもしれないですね。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="https://circleci.com/docs/api#new-build">CircleCI REST API - Trigger a new Build</a></li>
+<li><a href="http://blog.a-know.me/entry/2015/01/04/123432">CircleCI &#x306E;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30D0;&#x30C3;&#x30C2;&#x3092; README &#x306B;&#x8A2D;&#x7F6E;&#x3057;&#x3066;&#x307F;&#x305F; - &#x3048;&#x3044;&#x306E;&#x3046;&#x306B;&#x3063;&#x304D;</a></li>
+<li><a href="http://efcl.info/2014/07/30/find-github-release/">GitHub&#x3067;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3092;&#x898B;&#x3066;&#x3044;&#x304F;&#x305F;&#x3081;&#x306E;&#x30C4;&#x30FC;&#x30EB;&#x3084;&#x65B9;&#x6CD5; | Web Scratch</a></li>
+<li><a href="https://github.com/captn3m0/ifttt-webhook">https://github.com/captn3m0/ifttt-webhook</a></li>
+</ul>

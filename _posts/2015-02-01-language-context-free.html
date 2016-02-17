@@ -1,0 +1,225 @@
+---
+layout: post
+title: language-context-free
+---
+
+<p>ここ1ヶ月ほど<a href="https://atom.io/packages/language-context-free">language-context-free</a>という<a href="https://atom.io/">Atom editor</a>のContext Free用パッケージを開発していたので、その足跡を残しておきたい。qiitaとどちらに載せようか考えたけど、Context Freeの記事ははてなダイアリーに載せていたので、こちらに載せることにした。</p>
+
+<h2>TextMate bundleからコンバート</h2>
+
+<p>まずは、<a href="https://atom.io/docs/latest/converting-a-text-mate-bundle">Converting a TextMate Bundle</a>の手順にしたがって、<a href="https://github.com/textmate/context-free.tmbundle">Context FreeのTextMate bundle</a>をコンバートした。この状態で、スニペットが付いているはずである。</p>
+
+<p><code>apm publish minor</code>とやって、<a href="https://github.com/kn1kn1/language-context-free/tree/v0.1.0">v0.1.0</a>をリリース。</p>
+
+<h2>レンダリング機能</h2>
+
+<p><a href="https://github.com/textmate/context-free.tmbundle">TextMate版</a>では、cfdgコマンドが同梱されていてこれを使ってレンダリングが出来るようだったので、こちらでも入れてみることにした。</p>
+
+<p>パッケージ開発の参考にしたのは、<a href="https://github.com/atom/markdown-preview">Markdown Preview</a>と<a href="https://github.com/atom/image-view">Image View</a>である。libの下の3つのcoffeeスクリプトファイルはこのときに作成されたものである。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.2.0">v0.2.0</a></p>
+
+<p>実際に使ってみると、cfdgのコマンドを呼び出したまま戻ってこないケースがあったので、タイムアウトまでの時間を設定できるようにして、v0.3.0とした。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.3.0">v0.3.0</a></p>
+
+<p>また、レンダリングできるよう、cfdgのパスとLD_LIBRARY_PATHをオプションの設定項目にして、v0.4.0とした。
+Linuxは環境も様々なのでcfdg自体は自前でビルドしてこれらの設定項目で調整できるようにと配慮したつもりである。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.4.0">v0.4.0</a></p>
+
+<h2>cfdg Homebrew Tap</h2>
+
+<p>OS X用のcfdgコマンドを同梱したものの、正常に動作する環境とそうでない環境があるようだった。
+どの環境でもソースからビルドしたcfdgコマンドを使うと上手くいくようなので、個々の環境でビルドできるようHomebrewのformulaを作ることにした。</p>
+
+<pre><code>class Cfdg &lt; Formula
+  homepage "http://www.contextfreeart.org/"
+  url "http://www.contextfreeart.org/download/ContextFreeSource3.0.8.tgz"
+  sha1 "bbd90c74fd0e66cb071c342da52ad016e023da2b"
+
+  depends_on "bison" =&gt; :build
+  depends_on "libpng"
+
+  def install
+    system "make"
+    bin.install "cfdg"
+  end
+
+  test do
+    (testpath/"test.cfdg").write &lt;&lt;-EOS.undent
+    startshape SPIKE
+
+    CF::Symmetry = CF::Dihedral, 6
+
+    shape SPIKE
+    rule {
+      SQUARE []
+      SPIKE [y 0.95 s 0.97]
+    }
+    rule 0.03 {
+      SQUARE []
+      SPIKE [r 60]
+      SPIKE [r -60]
+      SPIKE [y 0.95 s 0.97]
+    }
+    EOS
+    system "cfdg", "-s", "700", "test.cfdg", "test.cfdg.png"
+  end
+end
+</code></pre>
+
+<p>bison(ビルド時にのみ依存する)とlibpngの記述を付けたのと、make installのルールが無いので、cfdgのコピーを追加している。
+また、テストはソースのtarballに含まれていたものを使用した。</p>
+
+<p><a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md">Formula Cookbook</a>を見ながら、<code>brew install --verbose --debug foo</code>や<code>brew audit</code>を実行して、問題のある箇所は修正した。</p>
+
+<p>最終的に、<a href="https://github.com/Homebrew/homebrew/pull/35604">本家にpull request出してみた</a>のだが、
+JenkinsのCIでリポジトリにした。</p>
+
+<p><a href="https://github.com/kn1kn1/homebrew-cfdg">https://github.com/kn1kn1/homebrew-cfdg</a></p>
+
+<p>Atomパッケージ側もcfdgパスをMandatoryの設定項目に変更して、v0.5.0とした。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.5.0">v0.5.0</a></p>
+
+<h2>Variation機能の追加とテストの追加</h2>
+
+<p>本家のContext Freeでは、cfdgに与える"A"〜"ZZZZZZ"のVariationの値があって、レンダリングする度に値が1ずつインクリメントしたりするのだけど、その機能を実装したいと考えていた。
+と、その前にそろそろテストが必要な感じがしてきたので、specを追加した。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/commit/eefec53d2eb84fc1b2c6c8454a3f4879a24d05e9">https://github.com/kn1kn1/language-context-free/commit/eefec53d2eb84fc1b2c6c8454a3f4879a24d05e9</a></p>
+
+<p>その後、設定画面からVariation値を変更できるようにするなどして、v0.6.0とした。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.6.0">v0.6.0</a></p>
+
+<h2>CI</h2>
+
+<p>テストを入れたので次はCIである。</p>
+
+<p><a href="https://github.com/atom/ci">https://github.com/atom/ci</a></p>
+
+<p>Linuxは簡単にはできそうになかった。</p>
+
+<h2>CI on Linux</h2>
+
+<p>調べて行くと、LinuxでのCIはフォーラムで議論されている最中だった。</p>
+
+<p><a href="https://discuss.atom.io/t/testing-ci-for-packages-on-linux/13070">https://discuss.atom.io/t/testing-ci-for-packages-on-linux/13070</a></p>
+
+<p>go-plusの作者が、wercker + dockerで試しているが上手く行っていないとのことだそうだ。</p>
+
+<p><a href="https://github.com/joefitzgerald/go-plus/blob/ee315c15630ea237323a320b9a32ec03f4f70892/Dockerfile">go-plusで公開していたDockerfile</a>を参考にして、こちらで色々と試した。</p>
+
+<p>wercker.ymlファイルは、<a href="http://devcenter.wercker.com/articles/docker/">wercker devcenter - Docker Support</a>や<a href="https://github.com/mies/wercker-docker-sample">wercker-docker-sample</a>などを参考にした。</p>
+
+<p>Dockerfileを以下の形にしたところでその旨上述のフォーラムに書き込んだ。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/blob/v0.6.5/Dockerfile">https://github.com/kn1kn1/language-context-free/blob/v0.6.5/Dockerfile</a></p>
+
+<pre><code># Atom Docker Image For Package Testing
+FROM ubuntu:trusty
+MAINTAINER Kenichi Kanai &lt;kn1kn1@users.noreply.github.com&gt;
+
+# Make Sure We're Up To Date
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+
+# Install Required Packages For Atom
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git gconf2 gconf-service libgtk2.0-0 libnotify4 libxtst6 libnss3 python gvfs-bin xdg-utils
+#  For downloading deb
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+#  For apm install
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y make g++
+#  For apm test
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb
+
+# Download And Install Atom
+RUN wget -nv -O atom-amd64.deb https://atom.io/download/deb
+RUN DEBIAN_FRONTEND=noninteractive dpkg -i atom-amd64.deb
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -f
+RUN rm -rf atom-amd64.deb
+RUN apm --version
+
+# Add Package To `/root` Dir
+ENV HOME /root
+ADD . $HOME
+WORKDIR /root
+
+# Install Package Dependencies
+RUN apm install
+
+# Start the Xvfb server with a display 99 and a virtual screen(monitor) 0.
+RUN start-stop-daemon --start --pidfile /tmp/xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac +extension GLX +extension RANDR +render -noreset &amp;&amp; \
+    sleep 3 &amp;&amp; \
+    export DISPLAY=:99 &amp;&amp; \
+    apm test
+</code></pre>
+
+<p>実はそれほど問題なくできたのだけど、注意したところと言えば<code>start-stop-daemon</code>と<code>apm test</code>を同じRUNに入れるところくらいだろうか。</p>
+
+<h2>Docker Hub Registoryにレポジトリ作成</h2>
+
+<p>上記のDockerfileでも動作自体は問題ないのだが、必要となるpackageを毎回インストールするのは時間が掛かるので、
+Docker Hub Registoryに<a href="https://registry.hub.docker.com/u/kn1kn1/atom-apm-test/">atom-apm-test</a>という名前のレポジトリを作成して、これをFromに使うようにした。</p>
+
+<p><a href="https://registry.hub.docker.com/u/kn1kn1/atom-apm-test/">https://registry.hub.docker.com/u/kn1kn1/atom-apm-test/</a></p>
+
+<p>最終的なDockerfileとしては以下の形になった。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/blob/master/Dockerfile">https://github.com/kn1kn1/language-context-free/blob/master/Dockerfile</a></p>
+
+<pre><code># Atom Docker Image For Package Testing
+
+# based from the container published at docker hub
+# https://registry.hub.docker.com/u/kn1kn1/atom-apm-test/
+FROM kn1kn1/atom-apm-test:latest
+MAINTAINER Kenichi Kanai &lt;kn1kn1@users.noreply.github.com&gt;
+
+# Make Sure We're Up To Date
+RUN \
+  apt-get update &amp;&amp; \
+  DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
+
+# Download And Install Atom
+RUN \
+  wget -nv -O atom-amd64.deb https://atom.io/download/deb &amp;&amp; \
+  DEBIAN_FRONTEND=noninteractive dpkg -i atom-amd64.deb &amp;&amp; \
+  DEBIAN_FRONTEND=noninteractive apt-get install -f &amp;&amp; \
+  rm -rf atom-amd64.deb
+RUN \
+  apm --version
+
+# Add Package To `/root` Dir
+ENV HOME /root
+ADD . $HOME
+WORKDIR /root
+
+# Install Package Dependencies
+RUN \
+  apm install
+
+# Start the Xvfb server with a display 99 and a virtual screen(monitor) 0.
+RUN \
+  start-stop-daemon --start --pidfile /tmp/xvfb_99.pid --make-pidfile \
+    --background --exec /usr/bin/Xvfb -- :99 -screen 0 1024x768x24 -ac \
+    +extension GLX +extension RANDR +render -noreset &amp;&amp; \
+  sleep 3 &amp;&amp; \
+  export DISPLAY=:99 &amp;&amp; \
+  apm test
+</code></pre>
+
+<p>Atomの最新版のインストールとpackageのインストール、テストを実行するだけにしている。</p>
+
+<p>上記とその他<a href="https://github.com/kn1kn1/language-context-free/commit/284735f6bf1bba543b5c320c4d23a03810fda2a3">CFDG3の対応</a>などを入れて、v0.7.0とした。</p>
+
+<p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.7.0">v0.7.0</a></p>
+
+<p>その後細かい修正を入れ、<a href="https://github.com/kn1kn1/language-context-free/tree/v0.7.5">v0.7.5</a>で開発は一段落というところである。</p>
+
+<h2>所感</h2>
+
+<p>最初はコンバートだけで他にあまりやることは無いのかなーなどと思っていたのだが、レポジトリ作成など得るものが多かったように感じた。</p>
+
+<p>あまりきちんと調べていないのだけど、Atomにコンバートされていない言語用パッケージはまだまだあるのかもしれない。また時間ができたら別の言語でもやってみたいところである。</p>

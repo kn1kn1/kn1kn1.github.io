@@ -1,0 +1,23 @@
+---
+layout: post
+title: Context Free Art - 9
+---
+
+<p>ひさびさに。</p><p><img src="{{site.baseurl}}/images/20100124022044.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>size { s 100 100 }
+
+startshape main
+rule main {
+    4 * { r 90 } aa {}
+}
+ 
+rule aa {
+    bb {}
+    bb { flip 0 }
+}
+ 
+rule bb {
+    100 * { x 1 } CIRCLE { s .5 h 100 sat .8 b .65 }
+    bb { y 1 s .99  h -5 }
+}</pre>

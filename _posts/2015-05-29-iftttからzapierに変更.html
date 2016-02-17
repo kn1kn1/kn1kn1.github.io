@@ -1,0 +1,18 @@
+---
+layout: post
+title: iftttからzapierに変更
+---
+
+<p><a href="{{site.baseurl}}/2015/05/22/ifttt-webhookとcircleciを使ってatomのハ-ーシ-ョンアッフ-をトリカ-ーにciか-実行されるようにした.html">ifttt-webhook&#x3068;CircleCI&#x3092;&#x4F7F;&#x3063;&#x3066;Atom&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x30A2;&#x30C3;&#x30D7;&#x3092;&#x30C8;&#x30EA;&#x30AC;&#x30FC;&#x306B;CI&#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x305F;</a></p>
+
+<p>の件の続きです。</p>
+
+<p>iftttだとwebhookが公式にサポートされていないのと、ifttt.captnemo.inがホストされているHerokuの無料プランが改定されて安定して運用されるか分からない(無料プランだと日に7時間スリープしてしまう)のがあったので、zapierに移行しました。</p>
+
+<p>移行と言っても、zapierにはwebhookのトリガーが用意されているので、以下のリンクからZapbookを作成して、rssとCircleCIのwebhookのURLを登録するだけで作成できました。</p>
+
+<p><a href="https://zapier.com/zapbook/zaps/1746/send-a-webhook-when-an-rss-feed-is-updated/">Send a webhook when an RSS feed is updated - RSS and Webhook Integrations - Zapbook - Zapier</a></p>
+
+<p>昨日さっそくAtomのバージョンアップがありましたが、無事CircleCIが起動されていました。</p>
+
+<p><img src="{{site.baseurl}}/images/20150529102240.png"></p>

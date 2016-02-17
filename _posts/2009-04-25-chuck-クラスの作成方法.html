@@ -1,0 +1,115 @@
+---
+layout: post
+title: ChucK クラスの作成方法
+---
+
+<p>クラスの作成方法。<br />
+<a href="http://www.local-guru.net/blog/2009/01/17/modularizing-chuck-files">http://www.local-guru.net/blog/2009/01/17/modularizing-chuck-files</a></p><br />
+<p>Blue Monday。一部変更したけど、ほぼ原型まま。<br />
+(2009/05/02修正: gainが5だったのを1に修正)</p>
+<pre class="code" data-lang="" data-unlink>class DrumSet {
+	// define hihat
+	Shakers hhs =&gt; JCRev r;
+	.025 =&gt; r.mix;
+	Std.mtof(76) =&gt; hhs.freq;
+	
+	// define bass drum
+	SinOsc s =&gt; ADSR bda;
+	80 =&gt; s.freq;
+	(0::ms, 10::ms, 0.0, 0::ms) =&gt; bda.set;
+	
+	// define snare drum
+	Noise n =&gt; ADSR sna =&gt; Gain g =&gt; dac;
+	1 =&gt; g.gain;
+	(0::ms, 25::ms, 0.0, 0::ms) =&gt; sna.set;
+	
+	public void connect(UGen ugen) {
+		r =&gt; ugen;
+		bda =&gt; ugen;
+		g =&gt; ugen;
+	}
+	
+	public void hh() {
+		1 =&gt; hhs.noteOn;
+	}
+	
+	public void bd() {
+		1 =&gt; bda.keyOn;
+	}
+	
+	public void sn() {
+		1 =&gt; sna.keyOn;
+	}
+}
+
+class Bass {
+	SawOsc sb =&gt; LPF filt =&gt; ADSR a =&gt; Gain g2;
+	440 =&gt; filt.freq;
+	0.3 =&gt; filt.Q;
+	0.0 =&gt; g2.gain;
+	(10::ms, 45::ms, 0.5, 40::ms) =&gt; a.set;
+	
+	public void connect(UGen u) {
+		g2 =&gt; u;
+	}
+	
+	public void bass(int tone) {
+		Std.mtof(tone) =&gt;  sb.freq;
+		1 =&gt; g2.gain;
+		1 =&gt; a.keyOn;
+		125::ms =&gt; now;
+		1 =&gt; a.keyOff;
+	}
+}
+
+// this synchronizes to period
+1::minute / 135 =&gt; dur DUR_4BEAT;
+DUR_4BEAT * 4 =&gt; dur DUR_BAR;
+DUR_4BEAT / 4 =&gt; dur DUR_16BEAT;
+DUR_BAR - (now % DUR_BAR) =&gt; now;
+
+DrumSet drm;
+drm.connect(dac);
+
+Bass bass;
+bass.connect(dac);
+
+[41, 41, 44, 46] @=&gt; int bline[];
+0 =&gt; int pos;
+
+for (0 =&gt; int count; ; 1 +=&gt; count) {	
+	if (count != 0 &amp;&amp; count % 8 == 0) { 1 + pos =&gt; pos; }
+	
+	if (count % 2 == 0) { drm.hh(); }
+	if (count % 8 == 0) { drm.bd(); }
+	if (count % 8 == 4) { drm.sn(); }
+	
+	if (count % 4 == 0) { spork ~ bass.bass(bline[pos % 4]); }
+	if (count % 4 == 2) { spork ~ bass.bass(12 + bline[pos % 4]); }
+	
+	DUR_16BEAT =&gt; now;
+}</pre><p><br />
+せっかくなので作ったフィルイン。小節単位で同期されるので、適当なタイミングでaddすればよい。</p>
+<pre class="code" data-lang="" data-unlink>// this synchronizes to period
+1::minute / 135 =&gt; dur DUR_4BEAT;
+DUR_4BEAT * 4 =&gt; dur DUR_BAR;
+DUR_4BEAT / 4 =&gt; dur DUR_16BEAT;
+DUR_BAR - (now % DUR_BAR) =&gt; now;
+
+DrumSet drm;
+drm.connect(dac);
+
+[
+1, 1, 1, 1, 1, 0, 1, 0,  
+1, 1, 1, 1, 1, 0, 1, 1,  
+1, 1, 1, 0, 1, 1, 1, 1, 
+1, 0, 0, 0, 0, 0, 0, 0 
+]
+@=&gt; int fillin[];
+
+for (0 =&gt; int count; count &lt; 32; 1 +=&gt; count) {	
+	if (fillin[count % 32]) {
+		drm.sn();
+	}
+	DUR_16BEAT =&gt; now;
+}</pre><p>miniAudicleでクラスだけロードするのはどうしたら良いものか。。</p>

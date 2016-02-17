@@ -1,0 +1,30 @@
+---
+layout: post
+title: Context Free Art - 7
+---
+
+<p>ramdomwalkって知らなかった。</p><p>Another snow in April<br />
+<img src="{{site.baseurl}}/images/20090411210835.jpg"><br />
+Variation: GBZ</p>
+<pre class="code" data-lang="" data-unlink>startshape main
+background{sat .1 b -.1}
+tile{s 2}
+
+rule main {
+  10 * {} randomwalk {}
+}
+ 
+rule randomwalk {
+  randomwalk {x 1 r 222}
+}
+rule randomwalk {
+  randomwalk {x -1 r -100}
+}
+rule randomwalk .1 {
+  SNOW {sat .1 b .3}
+} 
+
+rule SNOW {
+  TRIANGLE {}
+  SNOW {r 80 x .001 s .99 b .01}
+}</pre>

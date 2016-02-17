@@ -1,0 +1,73 @@
+---
+layout: post
+title: Context Free Art
+---
+
+<p><a href="http://blog.hatena.ne.jp/KZR/">id:KZR</a>さんの記事に触発されて弄ってみた。お手軽。</p>
+
+<p>Delta INC風のはずが、DRぽくなってしまった。</p>
+
+<p><img src="{{site.baseurl}}/images/20090211230748.jpg"></p>
+
+<p>コード。ちと長いのが残念。</p>
+
+<pre>startshape main
+background {b -.8}
+
+rule main {
+ 50 * {x 1 z -1 h 120} delta {h 330}
+}
+
+rule delta {
+   horizontal{}
+   spread {}
+}
+rule delta {
+   virtical{}
+   spread {}
+}
+
+rule horizontal {
+   CUBE {}
+   horizontal {z -1 x 1 y .58}
+}
+rule horizontal {
+   CUBE {}
+   horizontal {z 1 x -1 y -.58}
+}
+rule horizontal .5 {}
+
+rule virtical {
+   CUBE {}
+   virtical {z 1 y 1}
+}
+rule virtical {
+   CUBE {}
+   virtical {z -1 y -1}
+}
+rule virtical .8 {}
+
+rule spread {
+   delta {z -1 y -1}
+}
+rule spread {
+   delta {z 1 y 1}
+}
+rule spread {
+   delta {z -1 x 1 y .58}
+   delta {z -1 x -1 y .58}
+}
+rule spread {
+   delta {z 1 x 1 y -.58}
+   delta {z 1 x -1 y -.58}
+}
+rule spread 3 {}
+
+rule CUBE {
+   2 * {s -1 1 b .3} SIDE {h 0 sat 1}
+   TOP{}
+}
+rule SIDE {FACE {skew 0 30 b .7}}
+rule TOP {FACE [s 1.413 .816 r 135 h 0 sat 0 b .7]}
+rule FACE  {SQUARE {x .5 y -.5}}
+</pre>

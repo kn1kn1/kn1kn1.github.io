@@ -1,0 +1,20 @@
+---
+layout: post
+title: Context Free Art - 4
+---
+
+<p>クローバー</p><p><img src="{{site.baseurl}}/images/20090315133226.jpg"><br />
+</p>
+<pre class="code" data-lang="" data-unlink>startshape main 
+background {sat .3 h 200}
+
+rule main {
+  CLOVER {b .2}
+  main {z -1 s .8 x 4 r 100}
+}
+
+rule CLOVER {
+  CIRCLE {}
+  CLOVER {x 1 s .99 r 90 b .01}
+}</pre><p>Galleryにも投稿してみた。<br />
+<a href="http://www.contextfreeart.org/gallery/view.php?id=1647">http://www.contextfreeart.org/gallery/view.php?id=1647</a></p>

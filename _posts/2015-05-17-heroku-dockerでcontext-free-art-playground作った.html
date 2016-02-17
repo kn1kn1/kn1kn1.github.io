@@ -1,0 +1,27 @@
+---
+layout: post
+title: Heroku DockerでContext Free Art Playground作った
+---
+
+<p><img src="{{site.baseurl}}/images/20150517090244.png"></p>
+
+<p><a href="https://cfdg.herokuapp.com/">https://cfdg.herokuapp.com/</a></p>
+
+<p>Context Free Artをブラウザ上で試せるPlaygroundを作りました。</p>
+
+<p>サーバーサイドでcfdgを動かしてレンダリングしています。</p>
+
+<p>cfdgのようなコマンドは一般的なPaaSでは動かすこと難しいので、今回のHerokuのDocker対応で実現できました。</p>
+
+<p>Heroku以外にもDockerがカジュアルに使える場所が増えると良いですね。</p>
+
+<p><a href="https://github.com/kn1kn1/go-cfdg/">https://github.com/kn1kn1/go-cfdg/</a></p>
+
+<h5>参考</h5>
+
+<ul>
+<li><a href="https://blog.heroku.com/archives/2015/5/5/introducing_heroku_docker_release_build_deploy_heroku_apps_with_docker">Heroku | Introducing &#39;heroku docker:release&#39;: Build &amp; Deploy Heroku Apps with Docker</a></li>
+<li><a href="https://devcenter.heroku.com/articles/introduction-local-development-with-docker">Local Development with Docker | Heroku Dev Center</a></li>
+<li><a href="http://deeeet.com/writing/2015/05/07/heroku-docker/">Heroku&#x306E;&#39;docker:release&#39;&#x306E;&#x52D5;&#x304D; | SOTA</a></li>
+<li><a href="http://blog.kentarok.org/entry/2015/05/08/004452">Docker&#x3067;Heroku&#x3067;mruby&#x304C;&#x52D5;&#x3044;&#x305F;&#x305E;!!1 - delirious thoughts</a></li>
+</ul>

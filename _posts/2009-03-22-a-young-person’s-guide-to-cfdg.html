@@ -1,0 +1,80 @@
+---
+layout: post
+title: A young person’s guide to CFDG
+---
+
+<p>と、あまり上から目線で書くつもりはないのだけど、最近Context Freeをずっと触っているので、CFDG関連のリソースをまとめてみます。公式サイトのドキュメントが充実しているのでそればかりです。<br />
+<br />
+</p>
+
+<div class="section">
+    <h5>本体のLesson, Lesson2</h5>
+    <p>[Help]-[Lesson]で起動<br />
+最初はここから。Lesson2は途中で終わっているけど気にしない。<br />
+<br />
+</p>
+
+</div>
+<div class="section">
+    <h5>Design ideas</h5>
+    <p><a href="http://www.contextfreeart.org/mediawiki/index.php/Design_ideas">http://www.contextfreeart.org/mediawiki/index.php/Design_ideas</a><br />
+より実践的なテクニックはこちらで。大体のことはできるようになる。この辺りからじゃんじゃん作りましょう。<br />
+<br />
+</p>
+
+</div>
+<div class="section">
+    <h5>Reference Card</h5>
+    <p><a href="http://www.contextfreeart.org/mediawiki/index.php/Reference_Card">http://www.contextfreeart.org/mediawiki/index.php/Reference_Card</a><br />
+文法的に不安になるときはこちらが便利。自分の場合PDFを印刷してPCの傍らに置いています。<br />
+<br />
+</p>
+
+</div>
+<div class="section">
+    <h5>CFDG HOWTO</h5>
+    <p><a href="http://www.contextfreeart.org/mediawiki/index.php/CFDG_HOWTO">http://www.contextfreeart.org/mediawiki/index.php/CFDG_HOWTO</a><br />
+更に詳細な仕様を見たい場合はこちらを。まあほとんど見ないけど。そうは言っても、読んでいくと新しい発見なんかもあって、自分の場合target hueとか全然知らなかった。<br />
+<a href="http://www.contextfreeart.org/mediawiki/index.php/Shape_adjustments">http://www.contextfreeart.org/mediawiki/index.php/Shape_adjustments</a></p><p></p>
+
+</div>
+<div class="section">
+    <h5>CFDG About</h5>
+    <p><a href="http://www.contextfreeart.org/mediawiki/index.php/Context_Free_Art:About">http://www.contextfreeart.org/mediawiki/index.php/Context_Free_Art:About</a><br />
+個人的には、CFDGは再帰の終了条件(というか描画の終わり方)が重要だと思っているのだけど、それに関して</p>
+
+<pre>5. Continue from step 2 until the to do list is empty, 
+or everything on it is too small to be seen. 
+</pre><p>という記述が(ひっそりと)書かれている。</p><p>これは、</p>
+
+<ol>
+<li>描画するものがなくなるか</li>
+<li>見えなくなるまで小さくなったとき</li>
+</ol><p>ということである。</p><p>コードで書いてみると、、、</p>
+<pre class="code" data-lang="" data-unlink>// 描画するものがなくなるパターン
+// ruleを複数記述して一つは何も描画しないものを用意する
+startshape main
+
+rule main {
+  foo {}
+}
+
+rule foo {
+  CIRCLE {}
+  foo {x 1}
+}
+rule foo .1 {
+} </pre><pre class="code" data-lang="" data-unlink>// 見えなくなるまで小さくなるパターン
+// 再帰する度にサイズを小さくしている
+startshape main
+
+rule main {
+  foo {}
+}
+
+rule foo {
+  CIRCLE {}
+  foo {x 1 s .5}
+}</pre><p>CFDGに条件式が文法的にサポートされていれば確かにこんな記述にはならないのだけど、この辺りが世のプログラム言語とあまりに違い過ぎて、個人的には面白いと思うところです。</p>
+
+</div>
