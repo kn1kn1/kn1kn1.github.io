@@ -1,0 +1,13 @@
+---
+layout: page
+title: About
+permalink: /about/
+---
+
+{% if site.github_username %}
+* {% include icon-github.html username=site.github_username %}
+{% endif %}
+
+{% if site.twitter_username %}
+* {% include icon-twitter.html username=site.twitter_username %}
+{% endif %}
