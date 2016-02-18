@@ -5,7 +5,7 @@ title: ifttt-webhookとCircleCIを使ってAtomのバージョンアップをト
 
 <p><b>[2015/05/29 追記]</b> <a href="{{site.baseurl}}/2015/05/29/iftttからzapierに変更.html">連携サービスをiftttからzapierに変更しました。</a></p>
 
-<p>あるあるネタとして、</p>
+<p>Atomのパッケージ開発のあるあるネタとして、</p>
 
 <ul>
 <li>自分の開発しているパッケージよりもAtom本体のバージョンアップのほうが頻繁に発生する</li>
@@ -21,15 +21,13 @@ title: ifttt-webhookとCircleCIを使ってAtomのバージョンアップをト
 
 <h3>全体像</h3>
 
-<p>詳細は後述しますが、以下の流れでAtomのreleaseのフィードからCircleCIを起動出来るようにしています。</p>
+<p>詳細は後述しますが、以下の流れでgithubのAtomのreleaseのフィードからCircleCIを起動出来るようにしています。</p>
 
 <p><a href="https://github.com/atom/atom/releases.atom">https://github.com/atom/atom/releases.atom</a> -> ifttt Feed Channel -> ifttt WordPress Channel -> ifttt.captnemo.in (heroku) -> CircleCI</p>
 
 <h3>CIの選定</h3>
 
-<p>CI自体はgithubへのpushで実行されるようになっていました。
-Travis CIにもwerckerにも存在しないようで、色々調べたところCircleCIにありました。
-Travis CIも画面からビルドの再実行はできたのですが、それ以外の方法は見つけられませんでした。</p>
+<p>CI自体はTravis CIとwerckerを既に使っていて、githubへのpushで実行されるようになっていました。 githubへのpush以外の方法でCIが実行される方法を探したのですが、Travis CIにもwerckerにも存在しないようで、色々調べたところCircleCIにありました。 Travis CIも画面からビルドの再実行はできたのですが、それ以外の方法は見つけられませんでした。</p>
 
 <p>CircleCIでは、<a href="https://circleci.com/docs/api#new-build">CircleCI REST API - Trigger a new Build</a> にあるように、</p>
 

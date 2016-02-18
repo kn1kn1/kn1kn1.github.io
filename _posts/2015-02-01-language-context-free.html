@@ -7,7 +7,7 @@ title: language-context-free
 
 <h2>TextMate bundleからコンバート</h2>
 
-<p>まずは、<a href="https://atom.io/docs/latest/converting-a-text-mate-bundle">Converting a TextMate Bundle</a>の手順にしたがって、<a href="https://github.com/textmate/context-free.tmbundle">Context FreeのTextMate bundle</a>をコンバートした。この状態で、スニペットが付いているはずである。</p>
+<p>まずは、<a href="https://atom.io/docs/latest/converting-a-text-mate-bundle">Converting a TextMate Bundle</a>の手順にしたがって、<a href="https://github.com/textmate/context-free.tmbundle">Context FreeのTextMate bundle</a>をコンバートした。この状態で、シンタックスハイライトとスニペットが付いているはずである。</p>
 
 <p><code>apm publish minor</code>とやって、<a href="https://github.com/kn1kn1/language-context-free/tree/v0.1.0">v0.1.0</a>をリリース。</p>
 
@@ -23,7 +23,7 @@ title: language-context-free
 
 <p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.3.0">v0.3.0</a></p>
 
-<p>また、レンダリングできるよう、cfdgのパスとLD_LIBRARY_PATHをオプションの設定項目にして、v0.4.0とした。
+<p>また、Linuxでもレンダリングできるよう、cfdgのパスとLD_LIBRARY_PATHをオプションの設定項目にして、v0.4.0とした。
 Linuxは環境も様々なのでcfdg自体は自前でビルドしてこれらの設定項目で調整できるようにと配慮したつもりである。</p>
 
 <p><a href="https://github.com/kn1kn1/language-context-free/tree/v0.4.0">v0.4.0</a></p>
@@ -75,7 +75,7 @@ end
 <p><a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md">Formula Cookbook</a>を見ながら、<code>brew install --verbose --debug foo</code>や<code>brew audit</code>を実行して、問題のある箇所は修正した。</p>
 
 <p>最終的に、<a href="https://github.com/Homebrew/homebrew/pull/35604">本家にpull request出してみた</a>のだが、
-JenkinsのCIでリポジトリにした。</p>
+JenkinsのCIでOS X 10.8(Mountain Lion)でビルドに失敗するようだったので、仕方なくTapリポジトリにした。</p>
 
 <p><a href="https://github.com/kn1kn1/homebrew-cfdg">https://github.com/kn1kn1/homebrew-cfdg</a></p>
 
@@ -100,7 +100,7 @@ JenkinsのCIでリポジトリにした。</p>
 
 <p><a href="https://github.com/atom/ci">https://github.com/atom/ci</a></p>
 
-<p>Linuxは簡単にはできそうになかった。</p>
+<p>MacとWindowsではCIの方法が確立されているようである。Windowsはサポートしていないので、Mac用に.travis.ymlを用意した。Linuxは簡単にはできそうになかった。</p>
 
 <h2>CI on Linux</h2>
 
@@ -114,7 +114,7 @@ JenkinsのCIでリポジトリにした。</p>
 
 <p>wercker.ymlファイルは、<a href="http://devcenter.wercker.com/articles/docker/">wercker devcenter - Docker Support</a>や<a href="https://github.com/mies/wercker-docker-sample">wercker-docker-sample</a>などを参考にした。</p>
 
-<p>Dockerfileを以下の形にしたところでその旨上述のフォーラムに書き込んだ。</p>
+<p>Dockerfileを以下の形にしたところでapm testのpassまで確認できたので、<a href="https://discuss.atom.io/t/testing-ci-for-packages-on-linux/13070/13">その旨上述のフォーラムに書き込んだ</a>。</p>
 
 <p><a href="https://github.com/kn1kn1/language-context-free/blob/v0.6.5/Dockerfile">https://github.com/kn1kn1/language-context-free/blob/v0.6.5/Dockerfile</a></p>
 
@@ -159,7 +159,7 @@ RUN start-stop-daemon --start --pidfile /tmp/xvfb_99.pid --make-pidfile --backgr
 
 <p>実はそれほど問題なくできたのだけど、注意したところと言えば<code>start-stop-daemon</code>と<code>apm test</code>を同じRUNに入れるところくらいだろうか。</p>
 
-<h2>Docker Hub Registoryにレポジトリ作成</h2>
+<h2>Docker Hub Registoryにatom-apm-testレポジトリ作成</h2>
 
 <p>上記のDockerfileでも動作自体は問題ないのだが、必要となるpackageを毎回インストールするのは時間が掛かるので、
 Docker Hub Registoryに<a href="https://registry.hub.docker.com/u/kn1kn1/atom-apm-test/">atom-apm-test</a>という名前のレポジトリを作成して、これをFromに使うようにした。</p>
@@ -220,6 +220,6 @@ RUN \
 
 <h2>所感</h2>
 
-<p>最初はコンバートだけで他にあまりやることは無いのかなーなどと思っていたのだが、レポジトリ作成など得るものが多かったように感じた。</p>
+<p>最初はコンバートだけで他にあまりやることは無いのかなーなどと思っていたのだが、レンダリング機能の開発を始めてからは、Homebrew formulaの作成や、wercker + dockerでのCI、Docker Hubレポジトリ作成など得るものが多かったように感じた。</p>
 
-<p>あまりきちんと調べていないのだけど、Atomにコンバートされていない言語用パッケージはまだまだあるのかもしれない。また時間ができたら別の言語でもやってみたいところである。</p>
+<p>あまりきちんと調べていないのだけど、TextMateにあってAtomにコンバートされていない言語用パッケージはまだまだあるのかもしれない。また時間ができたら別の言語でもやってみたいところである。</p>

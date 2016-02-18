@@ -3,7 +3,11 @@ layout: post
 title: ChucK
 ---
 
-<p>miniAudicleを使った習作。=>相対パスの記述のやり方がまだ分からず…</p>
+<p>miniAudicleを使った習作。</p>
+
+<p><a href="http://sites.google.com/site/kn1kn1pages/Home/20090320.mp3?attredirects=0">http://sites.google.com/site/kn1kn1pages/Home/20090320.mp3?attredirects=0</a></p>
+
+<p>=>演算子が楽しい。ファイルの相対パスの記述のやり方がまだ分からず…</p>
 <pre class="code" data-lang="" data-unlink>1::minute / 120 =&gt; dur DUR_4BEAT;
 DUR_4BEAT * 4 =&gt; dur DUR_BAR;
 DUR_BAR - (now % DUR_BAR) =&gt; now;
@@ -47,7 +51,7 @@ for (0 =&gt; int count;;1 +=&gt; count) {
     hat[i] * .3 =&gt; h.gain;
     0 =&gt; k.pos;
     kick[i] * .4 =&gt; k.gain;
-    if (i == 0) { 
+    if (i == 0) {
         .8 =&gt; k.gain;
     }
     if (i == 3) {
@@ -62,10 +66,10 @@ fun float[] notes2freqs(int size, int notes[]) {
     float freqs[size];
     for (0 =&gt; int i; i &lt; size; i++) {
         (Std.rand2(0, 1) * 11 + 60
-        + notes[Std.rand2(0, notes.cap() - 1)]) 
+        + notes[Std.rand2(0, notes.cap() - 1)])
         =&gt; Std.mtof =&gt; freqs[i];
     }
-    return freqs;  
+    return freqs;
 }
 
 fun int[] rands(int size, int from, int to) {
@@ -73,5 +77,5 @@ fun int[] rands(int size, int from, int to) {
     for (0 =&gt; int i; i &lt; size; i++) {
         Std.rand2(from, to) =&gt; rands[i];
     }
-    return rands;  
+    return rands;
 }</pre>
