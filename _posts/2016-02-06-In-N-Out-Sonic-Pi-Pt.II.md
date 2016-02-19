@@ -45,7 +45,8 @@ end
 きちんとした説明や理論的な背景は、[Temporal semantics for a live coding languageという論文](https://www.cl.cam.ac.uk/~dao29/publ/farm14-aaron.pdf)にあるらしい(読んでない)のだが、大雑把に言うとlive_loopは「in_threadとdefineの組合せのシンタックス・シュガー」ということになる。
 
 では実際にcore.rbに書かれているlive_loopの中身を見てみよう。
-https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L733-L787
+
+[https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L733-L787](https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L733-L787)
 
 以下の部分で、live_loopで渡されたblockの処理をdefineし、
 
@@ -86,7 +87,7 @@ res = send(ll_name, res)
 
 とりあえずここまでは理解したけど、in_threadのブロックはどうやって変えてるの？先に実行されているスレッドの停止はどうやって待っているの？など疑問が尽きないのでin_threadの中身を見てみた。
 
-https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L2521
+[https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L2521](https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/lang/core.rb#L2521)
 
 実行中のスレッドを停止したり、joinしたりという処理は見つけられず、？？となったが、そういった処理は実際にはやっていなかった。
 

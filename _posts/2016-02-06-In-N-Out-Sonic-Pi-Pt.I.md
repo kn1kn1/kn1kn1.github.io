@@ -13,7 +13,8 @@ GUI (Qt) <-- OSC --> Sonic Pi Server (ruby) <-- OSC --> scsynth (SuperCollider S
 GUIとSonic Pi ServerはOSCでやりとりをしていて、Sonic Pi ServerはUDP4557番を監視している。
 
 このあたりの話は、つい先日Joe Armstrongが丁寧に書いているとおりである。
-https://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html
+
+[https://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html](https://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html)
 
 ## コードの実行
 上のJoe Armstrongの記事にもあるように、コードを実行させるには、GUI -> Sonic Pi Serverで"/run_code"コマンドを送信する。
