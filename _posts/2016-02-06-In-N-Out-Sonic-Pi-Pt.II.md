@@ -207,7 +207,8 @@ end
 SonicPi::RuntimeMethods#__stop_jobで停止していると思いきや、[SonicPi::Stopという例外](https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/runtime.rb#L44)を投げているだけだった。
 
 私がv2.6以前に手動でやっていたのと大して変わらなかった。
-https://twitter.com/kn1kn1/status/626900980085321728
+
+[https://twitter.com/kn1kn1/status/626900980085321728](https://twitter.com/kn1kn1/status/626900980085321728)
 
 ```
 kn1kn1
