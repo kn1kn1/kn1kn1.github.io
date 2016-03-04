@@ -54,7 +54,7 @@ Quilのスケッチでは、updateの度に上記の関数を呼んで値を取�
 lein new quilで作成したプロジェクトから弄ったのがこちらです。
 
 <iframe src="https://player.vimeo.com/video/157720429" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-<p><a href="https://vimeo.com/157720429">Quil voltap</a> from <a href="https://vimeo.com/user1962356">kn1kn1</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+<p><a href="https://vimeo.com/157720429">quil-voltap</a> from <a href="https://vimeo.com/user1962356">kn1kn1</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
 
 コードは[こちら](https://github.com/kn1kn1/quil-voltap)にあります。
 
