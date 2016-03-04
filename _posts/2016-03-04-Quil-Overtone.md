@@ -58,6 +58,8 @@ lein new quilで作成したプロジェクトから弄ったのがこちらで�
 
 コードは[こちら](https://github.com/kn1kn1/quil-voltap)にあります。
 
+[https://github.com/kn1kn1/quil-voltap](https://github.com/kn1kn1/quil-voltap)
+
 LightTableで実行すると2つウィンドウが表示されますが、[ここ](https://github.com/LightTable/LightTable/issues/150)を見ると"quil's fault"ということのようです。(emacsだと2つ出てこないので何とも言えないところですが、、)
 
 やっている内容としては、440Hz, 3000Hz辺りの音量をそれぞれ取得して、背景色、円の大きさなどに反映しています。
