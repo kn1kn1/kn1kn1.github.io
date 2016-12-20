@@ -17,13 +17,13 @@ GUIとSonic Pi ServerはOSCでやりとりをしていて、Sonic Pi ServerはUD
 [https://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html](https://joearms.github.io/2016/01/29/Controlling-Sound-with-OSC-Messages.html)
 
 ## コードの実行
-上のJoe Armstrongの記事にもあるように、コードを実行させるには、GUI -> Sonic Pi Serverで"/run_code"コマンドを送信する。
+上のJoe Armstrongの記事にもあるように、コードを実行させるには、GUI -> Sonic Pi Serverで"/run-code"コマンドを送信する。
 
 ```
-"/run_code", gui_id, code
+"/run-code", gui_id, code
 ```
 
-正確には、我々がCmd-rで「Run」するときには、"/run_code"ではなく"/save-and-run-buffer"を送信しているのであるが、いずれにしても実際にコードを実行しているのは、SonicPi::RuntimeMethods#__spider_eval の以下の箇所である。
+正確には、我々がCmd-rで「Run」するときには、"/run-code"ではなく"/save-and-run-buffer"を送信しているのであるが、いずれにしても実際にコードを実行しているのは、SonicPi::RuntimeMethods#__spider_eval の以下の箇所である。
 
 [runtime.rb#L687](https://github.com/samaaron/sonic-pi/blob/v2.9.0/app/server/sonicpi/lib/sonicpi/runtime.rb#L687)
 
