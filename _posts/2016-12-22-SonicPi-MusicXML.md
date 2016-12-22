@@ -15,7 +15,7 @@ MusicXMLの内容をSonic Piで演奏するという試みは、[こちら](http
 
 出来上がったコードは、↓にあります。
 
-https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb
+[https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb](https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb)
 
 おおまかな流れとしては、
 
@@ -194,7 +194,7 @@ musicxml-player.rbの中身をSonic PiのBufferにコピーして`Run`を叩い�
 
 上手くファイルが読み込めないなどの場合は、
 
-https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb#L212
+[https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb#L212](https://github.com/kn1kn1/sonic-pi-musicxml-player/blob/master/musicxml-player.rb#L212)
 
 ```ruby
 play_musicxml('~/sonic-pi-musicxml-player/lg-641011115129979680.xml')
@@ -202,8 +202,8 @@ play_musicxml('~/sonic-pi-musicxml-player/lg-641011115129979680.xml')
 
 あたりがファイルを指定している部分なので、ここを変更してみてください。
 
-MusicXMLファイルは、https://musescore.com/user/16083/scores/27630 から持ってきています。
+MusicXMLファイルは、[https://musescore.com/user/16083/scores/27630](https://musescore.com/user/16083/scores/27630) から持ってきています。
 
-https://musescore.com/ にはたくさんの楽譜が公開されているので、色々とダウンロードして試してみると面白いかもしれません。
+[https://musescore.com/](https://musescore.com/) にはたくさんの楽譜が公開されているので、色々とダウンロードして試してみると面白いかもしれません。
 
 では！
