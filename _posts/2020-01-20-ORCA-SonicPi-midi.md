@@ -7,7 +7,7 @@ title:  MacでSonic PiとORCAをMIDIで連携させる
 
 結論としては、以下のポストの情報が有用でした。感謝。
 
-https://rbnrpi.wordpress.com/2017/07/19/sonic-pi-3-0-arrives-get-going-with-its-midi-and-osc-commands/
+[https://rbnrpi.wordpress.com/2017/07/19/sonic-pi-3-0-arrives-get-going-with-its-midi-and-osc-commands/](https://rbnrpi.wordpress.com/2017/07/19/sonic-pi-3-0-arrives-get-going-with-its-midi-and-osc-commands/)
 
 ポイントは、"Audio Midi設定.app", "MIDIスタジオを表示", "装置はオンライン"。
 
@@ -53,12 +53,12 @@ MIDIスタジオの"IACドライバ"のアイコンが明るい色に変わっ�
 
 設定は、以上です。以下、ソースコードを使用して確認します。
 
-https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3
+[https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3](https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3)
 
 のgistに置いてあります。
 
 #### Sonic Pi側
-https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-9-rb
+[https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-9-rb](https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-9-rb)
 
 以下の箇所で、ORCAからのMIDIを受け付けています。`iacdriver_port1`の部分が、上で設定した"装置名"と"ポート"になります。
 
@@ -67,7 +67,7 @@ https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-9-rb
 ```
 
 #### ORCA側
-https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-orca-20b06-910764-orca
+[https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-orca-20b06-910764-orca](https://gist.github.com/kn1kn1/8944657e1cc62b2947e54044da465ec3#file-orca-20b06-910764-orca)
 
 こちらは特に設定内容に依存するところはありません。
 
